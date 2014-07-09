@@ -1,0 +1,8 @@
+//
+// Prefix header for all source files of the 'Soda2048' target in the 'Soda2048' project
+//
+
+#ifdef __OBJC__
+	#import <Foundation/Foundation.h>
+	#import <UIKit/UIKit.h>
+#endif
