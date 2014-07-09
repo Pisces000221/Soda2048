@@ -1,21 +1,21 @@
 app = {}
-app.res = { fonts = {} }
+app.res = {}
 display = {}
 
 require 'Cocos2d'
+require 'src/app'
 require 'src/scenes/splash'
+inspect = require('src/libs/inspect')
+
+function logtable(t)
+    print(inspect.inspect(t))
+end
 
 -- for CCLuaEngine traceback
 function __G__TRACKBACK__(msg)
     print('> COCOS-LUA: ' .. tostring(msg) .. '\n')
     print(debug.traceback())
     return msg
-end
-
-local function init_globalvars()
-    app.res.fonts.bold = 'fonts/ClearSans-Bold-webfont.ttf'
-    app.res.fonts.regular = 'fonts/ClearSans-Regular-webfont.ttf'
-    display.size = cc.Director:getInstance():getVisibleSize()
 end
 
 local function main()
@@ -26,7 +26,7 @@ local function main()
     math.randomseed(os.time())
     cc.FileUtils:getInstance():addSearchResolutionsOrder('src')
     cc.FileUtils:getInstance():addSearchResolutionsOrder('res')
-    init_globalvars()
+    app.init_globalvars()
 
     -- support debugging
     local platform = cc.Application:getInstance():getTargetPlatform()
@@ -37,11 +37,6 @@ local function main()
     else
         print('UNABLE TO DEBUG UNDER THIS PLATFORM...')
     end
-
-    -- check if is running on a laptop
-    app.on_laptop = platform == cc.PLATFORM_OS_LINUX
-      or platform == cc.PLATFORM_OS_MAC or platform == cc.PLATFORM_OS_WINDOWS
-    app.on_portable = not app.on_laptop
 
     -- run
     local scene = app.scenes.splash:create()
