@@ -34,6 +34,7 @@ local function main()
       or platform == cc.PLATFORM_OS_ANDROID or platform == cc.PLATFORM_OS_WINDOWS
       or platform == cc.PLATFORM_OS_MAC then
         print('DEBUGGING ENABLED')
+        cc.Director:getInstance():getConsole():listenOnTCP(5678)
     else
         print('UNABLE TO DEBUG UNDER THIS PLATFORM...')
     end
