@@ -1,5 +1,5 @@
 require 'src/scenes/_soda_base'
-require 'src/widgets/bubble'
+require 'src/scenes/gameplay'
 
 app.scenes = app.scenes or {}
 app.scenes.startup = app.scenes.startup or {}
@@ -45,6 +45,13 @@ function app.scenes.startup:create()
         ))
         scene:addChild(label)
     end
+
+    scene:setOnShakeCallback(function(self, direction)
+      if direction == 1 then
+          local next_scene = app.scenes.gameplay:create()
+          cc.Director:getInstance():pushScene(cc.TransitionSlideInT:create(0.5, next_scene))
+      end
+    end)
 
     return scene
 end

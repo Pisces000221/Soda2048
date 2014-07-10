@@ -12,9 +12,13 @@ function app.init_globalvars()
     display.ratio = display.size.width / 400    -- 400 is used for debugging on laptops
 
     -- check if is running on a laptop
+    local platform = cc.Application:getInstance():getTargetPlatform()
     app.on_laptop = platform == cc.PLATFORM_OS_LINUX
       or platform == cc.PLATFORM_OS_MAC or platform == cc.PLATFORM_OS_WINDOWS
-    app.on_portable = not app.on_laptop
+    app.on_mobile = not app.on_laptop
+    print('I see a platform numbered ' .. platform)
+    if app.on_mobile then print('Mm-hm. I think I\'m running on a mobile device.')
+    else print('Huh? Am I on a laptop?') end
 end
 
 function app.label(text, size, isbold, alignment, linesize)
