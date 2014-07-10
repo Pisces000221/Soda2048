@@ -34,11 +34,24 @@ function app.scenes.splash:create()
       1, cc.c4f(1, 1, 0, 1))
     scene:addChild(liner, 4)
 
+    local label = app.label('None', 48, true)
+    label:setColor(cc.c3b(0, 0, 0))
+    label:setOpacity(128)
+    label:setNormalizedPosition(cc.p(0.5, 0.5))
+    scene:addChild(label, 5)
+
+    local last_move_time = -1
     local function onAcceleration(event, x, y, z, timestamp)
-        print(x, y, z)
         bubbles[1]:setPositionY(display.size.height * (0.5 + x * 0.25))
         bubbles[2]:setPositionY(display.size.height * (0.5 + y * 0.25))
         bubbles[3]:setPositionY(display.size.height * (0.5 + z * 0.25))
+        if os.clock() > last_move_time + 0.5 then
+            if x > 0.6 then label:setString('Left'); last_move_time = os.clock(); print(last_move_time)
+            elseif x < -0.6 then label:setString('Right'); last_move_time = os.clock(); print(last_move_time)
+            elseif y > 0.6 then label:setString('Down'); last_move_time = os.clock(); print(last_move_time)
+            elseif y < -0.6 then label:setString('Up'); last_move_time = os.clock(); print(last_move_time)
+            end
+        end
     end
 
     local listener = cc.EventListenerAcceleration:create(onAcceleration)
