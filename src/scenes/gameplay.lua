@@ -4,6 +4,7 @@ require 'src/widgets/bubble'
 
 app.scenes = app.scenes or {}
 app.scenes.gameplay = app.scenes.gameplay or {}
+app.scenes.gameplay.boardsize = 4
 
 function app.scenes.gameplay:create()
     local scene = app.scenes._soda_base:create()
@@ -11,7 +12,9 @@ function app.scenes.gameplay:create()
     scene:addChild(bg, -1)
 
     -- the big '2048' in the top-left corner
-    local max_diametre = display.size.height - display.size.width
+    local max_diametre = math.min(
+      display.size.height - display.size.width,
+      display.size.width / app.scenes.gameplay.boardsize * 2)
     local bbl_title = app.widgets.bubble:create(max_diametre - 12, app.res.colours.tile[2048][1])
     bbl_title:setAnchorPoint(cc.p(0, 1))
     bbl_title:setPosition(cc.p(6, display.size.height - 6))
@@ -46,7 +49,8 @@ function app.scenes.gameplay:create()
     scene:addChild(hiscore_disp)
 
     -- the board, or grid (in gabrielecirulli/2048)
-    local board = app.widgets.board:create(4, display.size.width)
+    local board = app.widgets.board:create(app.scenes.gameplay.boardsize, display.size.width)
+    board:setPositionY(display.size.height - display.size.width - max_diametre)
     scene:addChild(board)
 
     -- generate two random tiles
