@@ -22,7 +22,7 @@ bool AppDelegate::applicationDidFinishLaunching()
     auto director = Director::getInstance();
 	auto glview = director->getOpenGLView();
 	if(!glview) {
-		glview = GLView::createWithRect("Soda 2048", Rect(0, 0, 720, 480));
+		glview = GLView::createWithRect("Soda 2048", Rect(0, 0, 400, 600));
 		director->setOpenGLView(glview);
 	}
     director->setDisplayStats(true);
