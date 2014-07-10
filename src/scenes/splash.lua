@@ -1,4 +1,5 @@
 require 'src/scenes/_soda_base'
+require 'src/scenes/startup'
 require 'src/widgets/bubble'
 
 app.scenes = app.scenes or {}
@@ -29,6 +30,17 @@ function app.scenes.splash:create()
         local s = { [1] = 'up', [2] = 'down', [3] = 'left', [4] = 'right' }
         lbl_2:setString(s[direction])
     end)
+
+    local schid = 0
+    schid = scene:getScheduler():scheduleScriptFunc(function()
+      local next_scene = app.scenes.startup:create()
+      local c = app.res.colours.background._3b
+      c.r = (0xff + c.r) * 0.5
+      c.g = (0xff + c.g) * 0.5
+      c.b = (0xff + c.b) * 0.5
+      cc.Director:getInstance():replaceScene(cc.TransitionFade:create(0.5, next_scene, c))
+      scene:getScheduler():unscheduleScriptEntry(schid)
+    end, 2, false)
 
     return scene
 end
