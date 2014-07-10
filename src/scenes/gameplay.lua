@@ -1,4 +1,5 @@
 require 'src/scenes/_soda_base'
+require 'src/widgets/board'
 require 'src/widgets/bubble'
 
 app.scenes = app.scenes or {}
@@ -43,6 +44,10 @@ function app.scenes.gameplay:create()
     hiscore_disp:setPosition(cc.p(
       (display.size.width + max_diametre) * 0.5, display.size.height - max_diametre * 0.8))
     scene:addChild(hiscore_disp)
+
+    -- the board, or grid (in gabrielecirulli/2048)
+    local board = app.widgets.board:create(4, display.size.width)
+    scene:addChild(board)
 
     return scene
 end

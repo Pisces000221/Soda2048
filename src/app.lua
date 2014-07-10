@@ -22,6 +22,8 @@ function app.init_globalvars()
     [2048] = { cc.c3b(0xed, 0xc2, 0x2e), cc.c3b(0xf9, 0xf6, 0xf2) },
     [4096] = { cc.c3b(0x3c, 0x3a, 0x32), cc.c3b(0xf9, 0xf6, 0xf2) }
     }
+    app.res.colours.cell = { _4b = cc.c4b(238, 228, 218, 0.35 * 255), _3b = cc.c3b(238, 228, 218) }
+    app.res.colours.game_container = { _4b = cc.c4b(0xbb, 0xad, 0xa0, 255), _3b = cc.c3b(0xbb, 0xad, 0xa0) }
     display.size = cc.Director:getInstance():getVisibleSize()
     display.ratio = display.size.width / 400    -- 400 is used for debugging on laptops
 
