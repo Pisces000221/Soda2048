@@ -23,5 +23,5 @@ function app.label(text, size, isbold, alignment, linesize)
     elseif alignment == 'left' then _alignment = cc.VERTICAL_TEXT_ALIGNMENT_LEFT
     else _alignment = cc.VERTICAL_TEXT_ALIGNMENT_CENTER end
     return cc.Label:createWithTTF(
-      { fontFilePath = ttfpath, fontSize = size }, _alignment, linesize)
+      { fontFilePath = ttfpath, fontSize = size }, text, _alignment, linesize)
 end
