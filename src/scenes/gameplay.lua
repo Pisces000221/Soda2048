@@ -49,5 +49,14 @@ function app.scenes.gameplay:create()
     local board = app.widgets.board:create(4, display.size.width)
     scene:addChild(board)
 
+    -- generate two random tiles
+    board:gen_random()
+    board:gen_random()
+
+    -- handle shake events
+    scene:setOnShakeCallback(function(self, direction)
+      if direction == 1 then board:gen_random() end
+    end)
+
     return scene
 end
