@@ -17,12 +17,11 @@ function app.scenes._soda_base:create()
 if app.on_mobile then   -- #if IS_ON_MOBILE
     local last_move_time = -1
     local function onAcceleration(event, x, y, z, timestamp)
-        print(os.clock())
         if os.clock() > last_move_time + app.scenes._soda_base.min_move_interval then
-            if x > app.scenes._soda_base.min_move_acc then last_move_time = os.clock(); scene:_onShake(3);
-            elseif x < -app.scenes._soda_base.min_move_acc then last_move_time = os.clock(); scene:_onShake(4);
-            elseif y > app.scenes._soda_base.min_move_acc then last_move_time = os.clock(); scene:_onShake(2);
-            elseif y < -app.scenes._soda_base.min_move_acc then last_move_time = os.clock(); scene:_onShake(1);
+            if x > app.scenes._soda_base.min_move_acc then last_move_time = os.clock(); scene:_onShake(3); print('onshake 3')
+            elseif x < -app.scenes._soda_base.min_move_acc then last_move_time = os.clock(); scene:_onShake(4); print('onshake 4')
+            elseif y > app.scenes._soda_base.min_move_acc then last_move_time = os.clock(); scene:_onShake(2); print('onshake 2')
+            elseif y < -app.scenes._soda_base.min_move_acc then last_move_time = os.clock(); scene:_onShake(1); print('onshake 1')
             end
         end
     end
@@ -31,15 +30,7 @@ if app.on_mobile then   -- #if IS_ON_MOBILE
 
     local listener = cc.EventListenerAcceleration:create(onAcceleration)
     emptylayer:getEventDispatcher():addEventListenerWithSceneGraphPriority(listener, emptylayer)
-
-    local function onNodeEvent(event)
-        if event == 'enter' then
-            emptylayer:setAccelerometerEnabled(true)
-        elseif event == 'exit' then
-            emptylayer:setAccelerometerEnabled(false)
-        end
-    end
-    emptylayer:registerScriptHandler(onNodeEvent)
+    emptylayer:setAccelerometerEnabled(true)
 
 else    -- #else
     local function onKeyReleased(keyCode, event)
