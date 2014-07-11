@@ -59,8 +59,7 @@ function app.scenes.gameplay:create()
 
     -- handle shake events
     scene:setOnShakeCallback(function(self, direction)
-      if direction == 1 then board:gen_random()
-      elseif direction == 2 then board:move(2) end
+      board:move(direction)
     end)
 
     return scene
