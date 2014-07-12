@@ -55,40 +55,25 @@ function app.scenes.gameplay:create(highscore_key)
     end
 
     -- the big '2048' in the top-left corner
-    local max_diametre = math.min(
-      display.size.height - display.size.width,
-      display.size.width / app.scenes.gameplay.boardsize * 2)
-    scene.max_diametre = max_diametre
-    local bbl_title = app.widgets.bubble:create(max_diametre - 12, app.res.colours.tile[2048][1])
-    bbl_title:setAnchorPoint(cc.p(0, 1))
-    bbl_title:setPosition(cc.p(6, display.size.height - 6))
-    scene:addChild(bbl_title, 1)
-    local lbl_title = app.label('2048', 72, true)
-    lbl_title:setColor(app.res.colours.tile[2048][2])
-    lbl_title:setPosition(cc.p(max_diametre * 0.5, display.size.height - max_diametre * 0.5))
-    scene:addChild(lbl_title, 2)
-    local lbl_goback = app.label('Tap to go back', 24, false)
-    lbl_goback:setColor(app.res.colours.tile[2048][2])
-    lbl_goback:setPosition(cc.pSub(cc.p(lbl_title:getPosition()), cc.p(0, lbl_title:getContentSize().height / 2)))
-    scene:addChild(lbl_goback, 2)
+    app.add_2048_title(scene)
 
     -- the 'go back' button
     local function onTouchBegan(touch, event)
         local p = touch:getLocation()
-        return (p.y > display.size.height - max_diametre and p.x < max_diametre)
+        return (p.y > display.size.height - scene.max_diametre and p.x < scene.max_diametre)
           or (scene.game_over and
-           p.y >= display.size.height - display.size.width - max_diametre and
-           p.y <= display.size.height - max_diametre)
+           p.y >= display.size.height - display.size.width - scene.max_diametre and
+           p.y <= display.size.height - scene.max_diametre)
     end
     local function onTouchEnded(touch, event)
         local p = touch:getLocation()
-        if p.y > display.size.height - max_diametre and p.x < max_diametre then
+        if p.y > display.size.height - scene.max_diametre and p.x < scene.max_diametre then
             print('go back')
             scene.goback()
             cc.Director:getInstance():popScene()
         elseif scene.game_over and
-          p.y >= display.size.height - display.size.width - max_diametre and
-          p.y <= display.size.height - max_diametre then
+          p.y >= display.size.height - display.size.width - scene.max_diametre and
+          p.y <= display.size.height - scene.max_diametre then
             scene:restart_game()
         end
     end
@@ -103,29 +88,29 @@ function app.scenes.gameplay:create(highscore_key)
     local lbl_score = app.label('SCORE', 30, false)
     lbl_score:setColor(app.res.colours.front._3b)
     lbl_score:setPosition(cc.p(
-      (display.size.width + max_diametre) * 0.5, display.size.height - max_diametre * 0.2))
+      (display.size.width + scene.max_diametre) * 0.5, display.size.height - scene.max_diametre * 0.2))
     scene:addChild(lbl_score)
     local score_disp = app.label('0', 45, true)
     score_disp:setColor(app.res.colours.front._3b)
     score_disp:setPosition(cc.p(
-      (display.size.width + max_diametre) * 0.5, display.size.height - max_diametre * 0.4))
+      (display.size.width + scene.max_diametre) * 0.5, display.size.height - scene.max_diametre * 0.4))
     scene:addChild(score_disp, 0, app.scenes.gameplay.score_disp_tag)
     -- high score
     local lbl_hiscore = app.label('BEST', 30, false)
     lbl_hiscore:setColor(app.res.colours.front._3b)
     lbl_hiscore:setPosition(cc.p(
-      (display.size.width + max_diametre) * 0.5, display.size.height - max_diametre * 0.6))
+      (display.size.width + scene.max_diametre) * 0.5, display.size.height - scene.max_diametre * 0.6))
     scene:addChild(lbl_hiscore)
     local hi_score = cc.UserDefault:getInstance():getIntegerForKey(scene.highscore_key, 0)
     local hiscore_disp = app.label(tostring(hi_score), 45, true)
     hiscore_disp:setColor(app.res.colours.front._3b)
     hiscore_disp:setPosition(cc.p(
-      (display.size.width + max_diametre) * 0.5, display.size.height - max_diametre * 0.8))
+      (display.size.width + scene.max_diametre) * 0.5, display.size.height - scene.max_diametre * 0.8))
     scene:addChild(hiscore_disp, 0, app.scenes.gameplay.hiscore_disp_tag)
 
     -- the board, or grid (in gabrielecirulli/2048)
     local board = app.widgets.board:create(app.scenes.gameplay.boardsize, display.size.width)
-    board:setPositionY(display.size.height - display.size.width - max_diametre)
+    board:setPositionY(display.size.height - display.size.width - scene.max_diametre)
     scene:addChild(board, 0, app.scenes.gameplay.board_tag)
 
     -- board settings (default)

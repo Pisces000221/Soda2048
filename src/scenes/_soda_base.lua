@@ -1,7 +1,6 @@
 app.scenes = app.scenes or {}
 app.scenes._soda_base = app.scenes._soda_base or {}
 app.scenes._soda_base.min_move_interval = 0.5
-app.scenes._soda_base.min_move_acc = 0.6
 
 function app.scenes._soda_base:create()
     local scene = cc.Scene:create()
@@ -18,10 +17,10 @@ if app.on_mobile then   -- #if IS_ON_MOBILE
     local last_move_time = os.clock() - 1
     local function onAcceleration(event, x, y, z, timestamp)
         if os.clock() > last_move_time + app.scenes._soda_base.min_move_interval then
-            if x > app.scenes._soda_base.min_move_acc then last_move_time = os.clock(); scene:_onShake(3); print('onshake 3')
-            elseif x < -app.scenes._soda_base.min_move_acc then last_move_time = os.clock(); scene:_onShake(4); print('onshake 4')
-            elseif y > app.scenes._soda_base.min_move_acc then last_move_time = os.clock(); scene:_onShake(2); print('onshake 2')
-            elseif y < -app.scenes._soda_base.min_move_acc then last_move_time = os.clock(); scene:_onShake(1); print('onshake 1')
+            if x > app.prefs.sensitivity then last_move_time = os.clock(); scene:_onShake(3); print('onshake 3')
+            elseif x < -app.prefs.sensitivity then last_move_time = os.clock(); scene:_onShake(4); print('onshake 4')
+            elseif y > app.prefs.sensitivity then last_move_time = os.clock(); scene:_onShake(2); print('onshake 2')
+            elseif y < -app.prefs.sensitivity then last_move_time = os.clock(); scene:_onShake(1); print('onshake 1')
             end
         end
     end

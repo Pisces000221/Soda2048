@@ -1,5 +1,6 @@
 app = {}
 app.res = { fonts = {}, colours = {} }
+app.prefs = {}
 display = {}
 
 function app.init_globalvars()
@@ -35,6 +36,10 @@ function app.init_globalvars()
     print('I see a platform numbered ' .. platform)
     if app.on_mobile then print('Mm-hm. I think I\'m running on a mobile device.')
     else print('Huh? Am I on a laptop?') end
+
+    -- read config
+    app.prefs.sensitivity_default = 0.6
+    app.prefs.sensitivity = cc.UserDefault:getInstance():getFloatForKey('acc_sensitivity', app.prefs.sensitivity_default)
 end
 
 function app.label(text, size, isbold, alignment, linesize)
@@ -63,6 +68,25 @@ function app.sidelabel(side, text, size, isbold, alignment, linesize)
     -- set the position (normalized)
     label:setNormalizedPosition(sidelabel_pos[side])
     return label
+end
+
+function app.add_2048_title(scene)
+    local max_diametre = math.min(
+      display.size.height - display.size.width,
+      display.size.width / app.scenes.gameplay.boardsize * 2)
+    scene.max_diametre = max_diametre
+    local bbl_title = app.widgets.bubble:create(max_diametre - 12, app.res.colours.tile[2048][1])
+    bbl_title:setAnchorPoint(cc.p(0, 1))
+    bbl_title:setPosition(cc.p(6, display.size.height - 6))
+    scene:addChild(bbl_title, 1)
+    local lbl_title = app.label('2048', 72, true)
+    lbl_title:setColor(app.res.colours.tile[2048][2])
+    lbl_title:setPosition(cc.p(max_diametre * 0.5, display.size.height - max_diametre * 0.5))
+    scene:addChild(lbl_title, 2)
+    local lbl_goback = app.label('Tap to go back', 24, false)
+    lbl_goback:setColor(app.res.colours.tile[2048][2])
+    lbl_goback:setPosition(cc.pSub(cc.p(lbl_title:getPosition()), cc.p(0, lbl_title:getContentSize().height / 2)))
+    scene:addChild(lbl_goback, 2)
 end
 
 function display.normalize(x, y)
