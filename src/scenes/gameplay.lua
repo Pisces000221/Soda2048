@@ -23,6 +23,28 @@ function app.scenes.gameplay:create()
     lbl_title:setColor(app.res.colours.tile[2048][2])
     lbl_title:setPosition(cc.p(max_diametre * 0.5, display.size.height - max_diametre * 0.5))
     scene:addChild(lbl_title, 2)
+    local lbl_goback = app.label('Tap to go back', 24, false)
+    lbl_goback:setColor(app.res.colours.tile[2048][2])
+    lbl_goback:setPosition(cc.pSub(cc.p(lbl_title:getPosition()), cc.p(0, lbl_title:getContentSize().height / 2)))
+    scene:addChild(lbl_goback, 2)
+
+    -- the 'go back' button
+    local function onTouchBegan(touch, event)
+        local p = touch:getLocation()
+        return p.y > display.size.height - max_diametre and p.x < max_diametre
+    end
+    local function onTouchEnded(touch, event)
+        local p = touch:getLocation()
+        if p.y > display.size.height - max_diametre and p.x < max_diametre then
+            print('go back')
+            cc.Director:getInstance():popScene()
+        end
+    end
+    local listener = cc.EventListenerTouchOneByOne:create()
+    listener:setSwallowTouches(true)
+    listener:registerScriptHandler(onTouchBegan, cc.Handler.EVENT_TOUCH_BEGAN)
+    listener:registerScriptHandler(onTouchEnded, cc.Handler.EVENT_TOUCH_ENDED)
+    scene:getEventDispatcher():addEventListenerWithSceneGraphPriority(listener, scene)
 
     -- the score board
     -- current score
