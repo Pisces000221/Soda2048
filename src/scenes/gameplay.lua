@@ -59,7 +59,19 @@ function app.scenes.gameplay:create()
 
     -- handle shake events
     scene:setOnShakeCallback(function(self, direction)
+      local prev_score = board.score
       board:move(direction)
+      if prev_score ~= board.score then
+          score_disp:setString(tostring(board.score))
+          local hint = app.label('+' .. board.score - prev_score, 32)
+          hint:setColor(score_disp:getColor())
+          hint:setPosition(cc.pAdd(cc.p(score_disp:getPosition()), cc.p(-10, 0)))
+          hint:runAction(cc.Sequence:create(
+            cc.Spawn:create(cc.FadeOut:create(0.75), cc.MoveBy:create(0.75, cc.p(0, 40))),
+            cc.RemoveSelf:create()
+          ))
+          scene:addChild(hint)
+      end
     end)
 
     return scene

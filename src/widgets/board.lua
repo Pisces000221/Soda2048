@@ -28,6 +28,7 @@ function app.widgets.board:create(size, width)
             layer:addChild(cell, 1, layer:cell_tag(i, j))
         end
     end
+    layer.score = 0
     layer.tile_tag = app.widgets.board.tile_tag
     layer.get_value = app.widgets.board.get_value
     layer.get_tile = app.widgets.board.get_tile
@@ -155,6 +156,7 @@ function app.widgets.board:move(direction)
                       cc.RemoveSelf:create()))
                     tile:setTag(-1); second:setTag(-1)
                     -- get score
+                    self.score = self.score + tile.value * 2
                 else
                     new_pos = self:cell_pos(positions.farthest.x, positions.farthest.y)
                     tile:runAction(cc.MoveTo:create(app.widgets.board.tile_move_dur, new_pos))
