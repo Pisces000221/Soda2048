@@ -3,9 +3,15 @@ app.widgets.board = app.widgets.board or {}
 app.widgets.board.padding = 4
 app.widgets.board.tile_move_dur = 0.1
 
+app.widgets.board.lose_conditions = { no_moves_available = 0, grid_full = 1 }
+
 require 'src/data/js_array'
 require 'src/widgets/bubble'
 require 'src/widgets/tile'
+
+local _vectors = {
+    [4] = cc.p(0, 1), [3] = cc.p(0, -1), [2] = cc.p(-1, 0), [1] = cc.p(1, 0)
+}
 
 -- A game board. Contains a grid and tiles.
 -- For problems about tags, see @ref board.cell_tag and @ref board.tile_tag.
@@ -29,6 +35,9 @@ function app.widgets.board:create(size, width)
         end
     end
     layer.score = 0
+    layer.generates_new_after_move = true
+    layer.game_over = false
+    layer.lose_conditions = app.widgets.board.lose_conditions.no_moves_available
     layer.tile_tag = app.widgets.board.tile_tag
     layer.get_value = app.widgets.board.get_value
     layer.get_tile = app.widgets.board.get_tile
@@ -36,7 +45,14 @@ function app.widgets.board:create(size, width)
     layer.empty_cells = app.widgets.board.empty_cells
     layer.gen_random = app.widgets.board.gen_random
     layer.move = app.widgets.board.move
+    layer.game_over = app.widgets.board.game_over
+    layer.clear_and_restart = app.widgets.board.clear_and_restart
     layer._findFarthestPosition = app.widgets.board._findFarthestPosition
+
+    -- generate two random tiles
+    layer:gen_random()
+    layer:gen_random()
+
     return layer
 end
 
@@ -113,9 +129,6 @@ function app.widgets.board:gen_random()
 end
 
 function app.widgets.board:move(direction)
-    local _vectors = {
-        [4] = cc.p(0, 1), [3] = cc.p(0, -1), [2] = cc.p(-1, 0), [1] = cc.p(1, 0)
-    }
     local vector = _vectors[direction]
     local traversals = { x = app.data.js_array.new(), y = app.data.js_array.new() }
     local moved = false
@@ -168,13 +181,7 @@ function app.widgets.board:move(direction)
             end
         end
     end
-    if moved then print(string.format('random: %d, %d', self:gen_random())) end
-    for i = 1, self.size do
-        local s = ''
-        for j = 1, self.size do s = s .. self:get_value(i, j) .. ' ' end
-        print(s)
-    end
-    print('')
+    if self.generates_new_after_move and moved then self:gen_random() end
 end
 
 function app.widgets.board:_findFarthestPosition(row, col, vector)
@@ -185,4 +192,29 @@ function app.widgets.board:_findFarthestPosition(row, col, vector)
     until row <= 0 or row > self.size or col <= 0 or col > self.size
       or self:get_value(row, col) > 0
     return { farthest = cc.p(previous_x, previous_y), second = cc.p(row, col) }
+end
+
+-- check whether the game is over
+function app.widgets.board:game_over()
+    for i = 1, self.size do
+        for j = 1, self.size do
+            local tile_val = self:get_value(i, j)
+            if tile_val == 0 then return false end
+            if self.lose_conditions == app.widgets.board.lose_conditions.no_moves_available then
+                for d = 1, 4 do
+                    if self:get_value(i + _vectors[d].x, j + _vectors[d].y) == tile_val then return false end
+                end
+            end
+        end
+    end
+    return true
+end
+
+function app.widgets.board:clear_and_restart()
+    for i = 1, self.size do
+        for j = 1, self.size do self:removeChildByTag(self:tile_tag(i, j)) end
+    end
+    self.score = 0
+    self:gen_random()
+    self:gen_random()
 end
