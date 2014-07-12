@@ -64,7 +64,8 @@ function app.scenes.gameplay:create()
     lbl_hiscore:setPosition(cc.p(
       (display.size.width + max_diametre) * 0.5, display.size.height - max_diametre * 0.6))
     scene:addChild(lbl_hiscore)
-    local hiscore_disp = app.label('0', 45, true)
+    local hi_score = cc.UserDefault:getInstance():getIntegerForKey('high_score', 0)
+    local hiscore_disp = app.label(tostring(hi_score), 45, true)
     hiscore_disp:setColor(app.res.colours.front._3b)
     hiscore_disp:setPosition(cc.p(
       (display.size.width + max_diametre) * 0.5, display.size.height - max_diametre * 0.8))
@@ -93,6 +94,12 @@ function app.scenes.gameplay:create()
             cc.RemoveSelf:create()
           ))
           scene:addChild(hint)
+          if hi_score < board.score then
+              hi_score = board.score
+              hiscore_disp:setString(tostring(hi_score))
+              cc.UserDefault:getInstance():setIntegerForKey('high_score', hi_score)
+              cc.UserDefault:getInstance():flush()
+          end
       end
     end)
 
