@@ -31,6 +31,7 @@ function app.scenes.gameplay:create(highscore_key)
         self.game_over = true
         local cover = cc.LayerColor:create(cc.c4b(237, 194, 46, 192),
           display.size.width, display.size.width)
+        cover:setPositionY(display.size.height - display.size.width - self.max_diametre)
         self:addChild(cover, 100, app.scenes.gameplay.game_over_cover_tag)
         local lbl_game_over = app.label('Game Over!', 44, true)
         lbl_game_over:setColor(app.res.colours.front._3b)
@@ -57,6 +58,7 @@ function app.scenes.gameplay:create(highscore_key)
     local max_diametre = math.min(
       display.size.height - display.size.width,
       display.size.width / app.scenes.gameplay.boardsize * 2)
+    scene.max_diametre = max_diametre
     local bbl_title = app.widgets.bubble:create(max_diametre - 12, app.res.colours.tile[2048][1])
     bbl_title:setAnchorPoint(cc.p(0, 1))
     bbl_title:setPosition(cc.p(6, display.size.height - 6))
