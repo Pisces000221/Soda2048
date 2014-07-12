@@ -15,7 +15,7 @@ function app.scenes._soda_base:create()
     scene.setOnShakeCallback = function(self, fun) self._onShake = fun end
 
 if app.on_mobile then   -- #if IS_ON_MOBILE
-    local last_move_time = -1
+    local last_move_time = os.clock() - 1
     local function onAcceleration(event, x, y, z, timestamp)
         if os.clock() > last_move_time + app.scenes._soda_base.min_move_interval then
             if x > app.scenes._soda_base.min_move_acc then last_move_time = os.clock(); scene:_onShake(3); print('onshake 3')
