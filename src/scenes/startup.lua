@@ -2,6 +2,7 @@ require 'src/scenes/_soda_base'
 require 'src/scenes/gameplay'
 require 'src/scenes/gameplay_time'
 require 'src/scenes/options'
+require 'src/scenes/tutorial'
 
 app.scenes = app.scenes or {}
 app.scenes.startup = app.scenes.startup or {}
@@ -55,6 +56,9 @@ function app.scenes.startup:create()
       elseif direction == 2 then
           local next_scene = app.scenes.gameplay_time:create()
           cc.Director:getInstance():pushScene(cc.TransitionSlideInB:create(0.5, next_scene))
+      elseif direction == 3 then
+          local next_scene = app.scenes.tutorial:create()
+          cc.Director:getInstance():pushScene(cc.TransitionSlideInL:create(0.5, next_scene))
       elseif direction == 4 then
           local next_scene = app.scenes.options:create()
           cc.Director:getInstance():pushScene(cc.TransitionSlideInR:create(0.5, next_scene))

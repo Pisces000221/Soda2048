@@ -76,6 +76,7 @@ function app.add_2048_title(scene)
       display.size.width / app.scenes.gameplay.boardsize * 2)
     scene.max_diametre = max_diametre
     local bbl_title = app.widgets.bubble:create(max_diametre - 12, app.res.colours.tile[2048][1])
+    bbl_title:setOpacity(108)
     bbl_title:setAnchorPoint(cc.p(0, 1))
     bbl_title:setPosition(cc.p(6, display.size.height - 6))
     scene:addChild(bbl_title, 1)
