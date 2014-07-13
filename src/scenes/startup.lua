@@ -2,7 +2,7 @@ require 'src/scenes/_soda_base'
 require 'src/scenes/gameplay'
 require 'src/scenes/gameplay_time'
 require 'src/scenes/options'
-require 'src/scenes/tutorial'
+require 'src/scenes/help'
 
 app.scenes = app.scenes or {}
 app.scenes.startup = app.scenes.startup or {}
@@ -37,7 +37,7 @@ function app.scenes.startup:create()
     ))
     scene:addChild(lbl_soda)
 
-    local menus = { [1] = 'Classic Game', [2] = 'Time Trial', [3] = 'Tutorial', [4] = 'Options' }
+    local menus = { [1] = 'Classic Game', [2] = 'Time Trial', [3] = 'Help', [4] = 'Options' }
     for i = 1, 4 do
         local label = app.sidelabel(i, menus[i], 36)
         label:setColor(app.res.colours.front._3b)
@@ -57,7 +57,7 @@ function app.scenes.startup:create()
           local next_scene = app.scenes.gameplay_time:create()
           cc.Director:getInstance():pushScene(cc.TransitionSlideInB:create(0.5, next_scene))
       elseif direction == 3 then
-          local next_scene = app.scenes.tutorial:create()
+          local next_scene = app.scenes.help:create()
           cc.Director:getInstance():pushScene(cc.TransitionSlideInL:create(0.5, next_scene))
       elseif direction == 4 then
           local next_scene = app.scenes.options:create()

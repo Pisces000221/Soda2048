@@ -1,7 +1,7 @@
 app.scenes = app.scenes or {}
-app.scenes.tutorial = app.scenes.tutorial or {}
+app.scenes.help = app.scenes.help or {}
 
-function app.scenes.tutorial:create()
+function app.scenes.help:create()
     local scene = cc.Scene:create()
     local bg = cc.LayerColor:create(app.res.colours.background._4b);
     scene:addChild(bg, -1)
@@ -38,7 +38,7 @@ function app.scenes.tutorial:create()
     listener:registerScriptHandler(onTouchEnded, cc.Handler.EVENT_TOUCH_ENDED)
     scene:getEventDispatcher():addEventListenerWithSceneGraphPriority(listener, scene)
 
-    local lbl_title = app.label('Tutorial', 52, true)
+    local lbl_title = app.label('Help', 52, true)
     lbl_title:setColor(app.res.colours.front._3b)
     lbl_title:setAnchorPoint(cc.p(1, 1))
     lbl_title:setNormalizedPosition(cc.p(1, 1))
@@ -54,13 +54,11 @@ function app.scenes.tutorial:create()
     hand_phone_img:setScale(display.size.width * 0.5 / hand_phone_img:getContentSize().width)
     main_img:addChild(hand_phone_img)
     hand_phone_img:runAction(cc.RepeatForever:create(cc.Sequence:create(
-      cc.MoveBy:create(0.12, cc.p(0, 30 * display.ratio)),
-      cc.DelayTime:create(0.2),
-      cc.MoveBy:create(0.6, cc.p(0, -30 * display.ratio)),
+      cc.MoveBy:create(0.1, cc.p(0, 30 * display.ratio)),
+      cc.MoveBy:create(0.5, cc.p(0, -30 * display.ratio)),
       cc.DelayTime:create(0.5),
-      cc.MoveBy:create(0.12, cc.p(30 * display.ratio, 0)),
-      cc.DelayTime:create(0.2),
-      cc.MoveBy:create(0.6, cc.p(-30 * display.ratio, 0)),
+      cc.MoveBy:create(0.1, cc.p(30 * display.ratio, 0)),
+      cc.MoveBy:create(0.5, cc.p(-30 * display.ratio, 0)),
       cc.DelayTime:create(0.5)
     )))
     -- the instructions
