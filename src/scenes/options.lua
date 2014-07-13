@@ -10,13 +10,17 @@ function app.scenes.options:create()
 
     app.add_2048_title(scene)
     local startx, cursen = 0, app.prefs.sensitivity
+    local intend_back = false
     local function onTouchBegan(touch, event)
         local p = touch:getLocation()
         startx = p.x
+        intend_back = p.y > display.size.height - scene.max_diametre and p.x < scene.max_diametre
         return true
     end
     local function onTouchMoved(touch, event)
         local p = touch:getLocation()
+        local p1 = touch:getStartLocation()
+        if intend_back then return end
         cursen = app.prefs.sensitivity + (p.x - startx) / (display.size.width * 2)
         if cursen >= 1 then cursen = 1
         elseif cursen <= 0.05 then cursen = 0.05 end
@@ -24,7 +28,8 @@ function app.scenes.options:create()
     end
     local function onTouchEnded(touch, event)
         local p = touch:getLocation()
-        if p.y > display.size.height - scene.max_diametre and p.x < scene.max_diametre then
+        local p1 = touch:getStartLocation()
+        if intend_back and p.y > display.size.height - scene.max_diametre and p.x < scene.max_diametre then
             cc.Director:getInstance():popScene()
         end
         app.prefs.sensitivity = cursen

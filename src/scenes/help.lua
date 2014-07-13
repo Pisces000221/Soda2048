@@ -11,9 +11,11 @@ function app.scenes.help:create()
 
     app.add_2048_title(scene)
     local starty = 0
+    local intend_back = false
     local function onTouchBegan(touch, event)
         local p = touch:getLocation()
         starty = container:getPositionY()
+        intend_back = p.y > display.size.height - scene.max_diametre and p.x < scene.max_diametre
         return true
     end
     local function onTouchMoved(touch, event)
@@ -27,7 +29,7 @@ function app.scenes.help:create()
     end
     local function onTouchEnded(touch, event)
         local p = touch:getLocation()
-        if p.y > display.size.height - scene.max_diametre and p.x < scene.max_diametre then
+        if intend_back and p.y > display.size.height - scene.max_diametre and p.x < scene.max_diametre then
             cc.Director:getInstance():popScene()
         end
     end

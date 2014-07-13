@@ -58,20 +58,22 @@ function app.scenes.gameplay:create(highscore_key)
     app.add_2048_title(scene)
 
     -- the 'go back' button
+    local intend_back, intend_restart = false, false
     local function onTouchBegan(touch, event)
         local p = touch:getLocation()
-        return (p.y > display.size.height - scene.max_diametre and p.x < scene.max_diametre)
-          or (scene.game_over and
+        intend_back = p.y > display.size.height - scene.max_diametre and p.x < scene.max_diametre
+        intend_restart = scene.game_over and
            p.y >= display.size.height - display.size.width - scene.max_diametre and
-           p.y <= display.size.height - scene.max_diametre)
+           p.y <= display.size.height - scene.max_diametre
+        return intend_back or intend_restart
     end
     local function onTouchEnded(touch, event)
         local p = touch:getLocation()
-        if p.y > display.size.height - scene.max_diametre and p.x < scene.max_diametre then
-            print('go back')
+        local p1 = touch:getStartLocation()
+        if intend_back and p.y > display.size.height - scene.max_diametre and p.x < scene.max_diametre then
             scene.goback()
             cc.Director:getInstance():popScene()
-        elseif scene.game_over and
+        elseif intend_restart and
           p.y >= display.size.height - display.size.width - scene.max_diametre and
           p.y <= display.size.height - scene.max_diametre then
             scene:restart_game()
