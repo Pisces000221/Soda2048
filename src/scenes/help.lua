@@ -12,6 +12,7 @@ function app.scenes.help:create()
     app.add_2048_title(scene)
     local starty = 0
     local intend_back = false
+    local container_min_y = 0
     local function onTouchBegan(touch, event)
         local p = touch:getLocation()
         starty = container:getPositionY()
@@ -22,9 +23,7 @@ function app.scenes.help:create()
         local p = touch:getLocation()
         local y = starty + touch:getLocation().y - touch:getStartLocation().y
         if y >= 0 then y = 0
-        elseif y <= display.size.height - container:getContentSize().height then
-            y = display.size.height - container:getContentSize().height
-        end
+        elseif y <= container_min_y then y = container_min_y end
         container:setPositionY(y)
     end
     local function onTouchEnded(touch, event)
@@ -64,36 +63,39 @@ function app.scenes.help:create()
       cc.DelayTime:create(0.5)
     )))
     -- the instructions
-    local lbl_step1 = app.label('Hold your device top-down like this', 32, false, nil, display.size.width * 0.6)
-    lbl_step1:setColor(app.res.colours.front._3b)
+    local lbl_step1 = app.label('Hold your device top-down like this', 30, false, nil, display.size.width * 0.6)
+    lbl_step1:setColor(app.res.colours.front_dark._3b)
     lbl_step1:setAnchorPoint(cc.p(0, 1))
-    lbl_step1:setNormalizedPosition(cc.p(0.07, 0.9))
+    lbl_step1:setNormalizedPosition(cc.p(0.05, 0.9))
     main_img:addChild(lbl_step1)
-    local lbl_step2 = app.label('And shake it like this', 32, false, nil, display.size.width * 0.4)
-    lbl_step2:setColor(app.res.colours.front._3b)
-    lbl_step2:setAnchorPoint(cc.p(1, 0.5))
+    local lbl_step2 = app.label('And shake it like this', 30, false, nil, display.size.width * 0.4)
+    lbl_step2:setColor(app.res.colours.front_dark._3b)
+    lbl_step2:setAnchorPoint(cc.p(1, 0.55))
     lbl_step2:setNormalizedPosition(cc.p(0.95, 0.5))
     main_img:addChild(lbl_step2)
-    local lbl_step3_1 = app.label('Don\'t know about 2048?', 38, true)
-    lbl_step3_1:setColor(app.res.colours.front._3b)
-    lbl_step3_1:setNormalizedPosition(cc.p(0.5, 0.2))
+    local lbl_step3_1 = app.label('Don\'t know about 2048?', 30, true)
+    lbl_step3_1:setColor(app.res.colours.front_dark._3b)
+    lbl_step3_1:setNormalizedPosition(cc.p(0.5, 0.22))
     main_img:addChild(lbl_step3_1)
-    local lbl_step3_2 = app.label('See http://git.io/2048 for help', 32)
-    lbl_step3_2:setColor(app.res.colours.front._3b)
-    lbl_step3_2:setNormalizedPosition(cc.p(0.5, 0.14))
+    local lbl_step3_2 = app.label('See http://git.io/2048 for help', 24)
+    lbl_step3_2:setColor(app.res.colours.front_dark._3b)
+    lbl_step3_2:setNormalizedPosition(cc.p(0.5, 0.16))
     main_img:addChild(lbl_step3_2)
     local lbl_addition = app.label(
       'This is only a game based on 2048, and copied some of its code,'
       .. ' but this is not its fork.'
       .. ' This is only a clone, not the official 2048.',
-      20, false, nil, display.size.width * 1.2)
+      20, false, nil, display.size.width * 0.9)
     lbl_addition:setColor(app.res.colours.front._3b)
     lbl_addition:setNormalizedPosition(cc.p(0.5, 0.06))
     main_img:addChild(lbl_addition)
 
     local biggest_size = main_img:getContentSize()
+    biggest_size.width = biggest_size.width * main_img:getScale()
+    biggest_size.height = biggest_size.height * main_img:getScale()
     container:setContentSize(biggest_size)
-    container:setPositionY(display.size.height - container:getContentSize().height)
+    container_min_y = display.size.height - container:getContentSize().height - scene.max_diametre
+    container:setPositionY(container_min_y)
 
     return scene
 end

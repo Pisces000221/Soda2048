@@ -8,6 +8,7 @@ function app.init_globalvars()
     app.res.fonts.regular = 'res/fonts/ClearSans-Regular-webfont.ttf'
     app.res.colours.background = { _4b = cc.c4b(0xfa, 0xf8, 0xef, 0xff), _3b = cc.c3b(0xfa, 0xf8, 0xef) }
     app.res.colours.front = { _4b = cc.c4b(0x77, 0x6e, 0x65, 0xff), _3b = cc.c3b(0x77, 0x6e, 0x65) }
+    app.res.colours.front_dark = { _4b = cc.c4b(0x47, 0x3e, 0x35, 0xff), _3b = cc.c3b(0x47, 0x3e, 0x35) }
     app.res.colours.soda = { _4b = cc.c4b(0xff, 0xdf, 0x00, 0xff), _3b = cc.c3b(0xff, 0xdf, 0x00) }
     app.res.colours.tile = {
        [2] = { cc.c3b(0xee, 0xe4, 0xda), app.res.colours.front._3b },
