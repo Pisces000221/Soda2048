@@ -8,4 +8,5 @@ frameworks/runtime-src/proj.android/libs
 frameworks/runtime-src/proj.android/obj
 frameworks/runtime-src/proj.android/local.properties
 linux-build
+publish
 runtime

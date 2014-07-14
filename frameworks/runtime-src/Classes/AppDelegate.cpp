@@ -25,7 +25,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 		glview = GLView::createWithRect("Soda 2048", Rect(0, 0, 400, 600));
 		director->setOpenGLView(glview);
 	}
-    director->setDisplayStats(true);
+    director->setDisplayStats(false);
     director->setAnimationInterval(1.0 / 60);
 
     // start script engine
