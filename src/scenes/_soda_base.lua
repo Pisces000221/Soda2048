@@ -16,11 +16,14 @@ function app.scenes._soda_base:create()
 if app.on_mobile then   -- #if IS_ON_MOBILE
     local last_move_time = os.clock() - 1
     local function onAcceleration(event, x, y, z, timestamp)
-        if os.clock() > last_move_time + app.scenes._soda_base.min_move_interval then
-            if x > app.prefs.sensitivity then last_move_time = os.clock(); scene:_onShake(3); print('onshake 3')
-            elseif x < -app.prefs.sensitivity then last_move_time = os.clock(); scene:_onShake(4); print('onshake 4')
-            elseif y > app.prefs.sensitivity then last_move_time = os.clock(); scene:_onShake(2); print('onshake 2')
-            elseif y < -app.prefs.sensitivity then last_move_time = os.clock(); scene:_onShake(1); print('onshake 1')
+        local cur = os.clock()
+        -- sometimes os.clock() < 0 < last_move_time. maybe os.clock() is too big and 'jumped' to negative?
+        -- just like (int32)32767 + 1 = (int32)-32768 ...?
+        if cur > last_move_time + app.scenes._soda_base.min_move_interval or cur < last_move_time then
+            if x > app.prefs.sensitivity then last_move_time = cur; scene:_onShake(3)
+            elseif x < -app.prefs.sensitivity then last_move_time = cur; scene:_onShake(4)
+            elseif y > app.prefs.sensitivity then last_move_time = cur; scene:_onShake(2)
+            elseif y < -app.prefs.sensitivity then last_move_time = cur; scene:_onShake(1)
             end
         end
     end
