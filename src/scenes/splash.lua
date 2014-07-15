@@ -40,7 +40,7 @@ function app.scenes.splash:create()
       c.b = (0xff + c.b) * 0.5
       cc.Director:getInstance():replaceScene(cc.TransitionFade:create(0.5, next_scene, c))
       scene:getScheduler():unscheduleScriptEntry(schid)
-    end, 0, false)
+    end, 2, false)
 
     return scene
 end
