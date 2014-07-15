@@ -31,10 +31,11 @@ function app.scenes.options:create()
         local p1 = touch:getStartLocation()
         if intend_back and p.y > display.size.height - scene.max_diametre and p.x < scene.max_diametre then
             cc.Director:getInstance():popScene()
+        else
+            app.prefs.sensitivity = cursen
+            cc.UserDefault:getInstance():setFloatForKey('acc_sensitivity', cursen)
+            cc.UserDefault:getInstance():flush()
         end
-        app.prefs.sensitivity = cursen
-        cc.UserDefault:getInstance():setFloatForKey('acc_sensitivity', cursen)
-        cc.UserDefault:getInstance():flush()
     end
     local listener = cc.EventListenerTouchOneByOne:create()
     listener:setSwallowTouches(true)
